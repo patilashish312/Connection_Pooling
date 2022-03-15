@@ -16,23 +16,28 @@ Typical certificate generation have been achieved via below steps:
 
 
 #server cert	
-`keytool -genkeypair -dname "CN=localhost, OU=IT, O=TEST, L=PUNE , ST=MH, C=IN" -alias serverkey -keyalg RSA -keypass password -keystore caservercertdev.jks -storepass password -validity 730`
+keytool -genkeypair -dname "cn=localhost, ou=MyOu, o=Ashish PC, c=UK" -alias serverKey -keyalg RSA -keypass password -keystore caservercert.jks -storepass password -validity 1000
 
 #client cert
-`keytool -genkeypair -dname "CN=api.devmiluma.lumapr.com, OU=IT, O=TEST, L=PUNE , ST=MH, C=IN" -alias clientkey -keyalg RSA -keypass password -keystore caclientcertdev.jks -storepass password -validity 730`
+keytool -genkeypair -dname "cn=localhost, ou=MyOu, o=Ashish PC, c=UK" -alias clientKey -keyalg RSA -keypass password -keystore caclientcert.jks -storepass password -validity 1000
 
 
 #export client cert to client.cer
-`keytool -exportcert -rfc -alias clientkey -file client.cer -keypass password -keystore caclientcertdev.jks -storepass password`
+keytool -exportcert -rfc -alias clientKey -file client.cer -keypass password -keystore caclientcert.jks -storepass password
 
 #add client.cer to server keystore
-`keytool -importcert -alias clientkey -file client.cer -keystore caservercertdev.jks -storepass password -noprompt`
+keytool -importcert -alias clientKey -file client.cer -keystore caservercert.jks -storepass password -noprompt
 
 
 #export server cert to server.cer
-`keytool -exportcert -rfc -alias serverkey -file server.cer -keypass password -keystore caservercertdev.jks -storepass password`
+keytool -exportcert -rfc -alias serverKey -file server.cer -keypass password -keystore caservercert.jks -storepass password
 
 #add server.cer to client keystore
-`keytool -importcert -alias serverkey -file server.cer -keystore caclientcertdev.jks -storepass password -noprompt`
+keytool -importcert -alias serverKey -file server.cer -keystore caclientcert.jks -storepass password -noprompt
 
 
+
+
+-- Generated certificates are by default PKCS12 certs so we either have to use curl or SOAPUI to hit certs
+-- Put caclientcert.jks to SOAPUI SSL Settings-> KeyStore & also check `Client Authenticaion`.
+-- Optionally you can `keyStoreType` to PKCS12 in `application.properties`.
