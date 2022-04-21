@@ -15,29 +15,29 @@ Typical certificate generation have been achieved via below steps:
 
 
 
-#server cert	
+## server cert </br>
 keytool -genkeypair -dname "cn=localhost, ou=MyOu, o=Ashish PC, c=UK" -alias serverKey -keyalg RSA -keypass password -keystore caservercert.jks -storepass password -validity 1000
 
-#client cert
+## client cert </br>
 keytool -genkeypair -dname "cn=localhost, ou=MyOu, o=Ashish PC, c=UK" -alias clientKey -keyalg RSA -keypass password -keystore caclientcert.jks -storepass password -validity 1000
 
 
-#export client cert to client.cer
+## export client cert to client.cer </br>
 keytool -exportcert -rfc -alias clientKey -file client.cer -keypass password -keystore caclientcert.jks -storepass password
-
-#add client.cer to server keystore
+ 
+## add client.cer to server keystore </br>
 keytool -importcert -alias clientKey -file client.cer -keystore caservercert.jks -storepass password -noprompt
 
 
-#export server cert to server.cer
+## export server cert to server.cer </br>
 keytool -exportcert -rfc -alias serverKey -file server.cer -keypass password -keystore caservercert.jks -storepass password
 
-#add server.cer to client keystore
+## add server.cer to client keystore </br>
 keytool -importcert -alias serverKey -file server.cer -keystore caclientcert.jks -storepass password -noprompt
 
 
+</br>
 
-
--- Generated certificates are by default PKCS12 certs so we either have to use curl or SOAPUI to hit certs
--- Put caclientcert.jks to SOAPUI SSL Settings-> KeyStore & also check `Client Authenticaion`.
--- Optionally you can `keyStoreType` to PKCS12 in `application.properties`.
+-- Generated certificates are by default PKCS12 certs so we either have to use curl or SOAPUI to hit certs</br>
+-- Put caclientcert.jks to SOAPUI SSL Settings-> KeyStore & also check `Client Authenticaion`.</br>
+-- Optionally you can `keyStoreType` to PKCS12 in `application.properties`.</br>
